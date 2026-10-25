@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Rib Crib – Kitchen</title>
+<style>
+:root{--red:#A31212;--ink:#241616;--mut:#6B5C5C;--bg:#EFEEEE;--card:#fff;--line:#DDD8D8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:24px;color:var(--red)}
+h2{margin:22px 0 8px;font-size:18px}
+#st{color:var(--mut);font-size:14px}
+.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;border-left:6px solid var(--red)}
+.card h3{margin:0;font-size:22px}
+.card .m{color:var(--mut);font-size:14px;margin:2px 0 8px}
+.card ul{margin:0 0 10px;padding-left:20px;font-size:18px}
+.card .notes{background:#FFF4D6;border-radius:8px;padding:6px 10px;margin:6px 0 10px}
+button{font:700 15px system-ui,sans-serif;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;margin-right:6px}
+.ok{background:var(--red);color:#fff}.alt{background:#E6E2E2;color:var(--ink)}
+input[type=password]{font:16px system-ui;padding:12px;border-radius:10px;border:1.5px solid var(--line);width:240px;max-width:100%}
+.empty{color:var(--mut);padding:8px 2px}
+a{color:var(--red);font-weight:700}
+#ticket{display:none}
+@media print{
+  body>*:not(#ticket){display:none!important}
+  #ticket{display:block;color:#000;font:18px/1.4 "Courier New",monospace;max-width:100mm;padding:6mm}
+  #ticket .tbl{font:800 40px/1.1 Arial,sans-serif;margin:0 0 4px}
+  #ticket .meta{font-size:14px;margin:0 0 8px}
+  #ticket hr{border:0;border-top:2px dashed #000;margin:10px 0}
+  #ticket .ln{font-size:20px;font-weight:700;margin:6px 0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>The Rib Crib · Kitchen</h1><span id="st"></span></header>
+  <div id="login" style="margin-top:20px">
+    <p>Enter the staff key to see incoming orders and reservations.</p>
+    <input id="key" type="password" placeholder="Staff key" autocomplete="off"> <button class="ok" id="go">Open</button>
+    <p id="lerr" style="color:var(--red)"></p>
+  </div>
+  <div id="main" hidden>
+    <label><input type="checkbox" id="auto" checked> Print new orders automatically</label>
+    <h2>Sales</h2>
+    <div class="card" style="border-left-color:#2E7D32">
+      <label>Date <input type="date" id="sdate"></label>
+      <button class="alt" data-a="refresh-sales">Refresh</button>
+      <button class="alt" data-a="print-sales">Print report</button>
+      <div id="sbody"><p class="empty">Loading…</p></div>
+    </div>
+    <h2>New orders</h2><div id="orders"></div>
+    <h2>Reservation requests</h2><div id="res"></div>
+  </div>
+</div>
+<div id="ticket"></div>
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbzu7KGDR2Rfw-1ptBLC-41ihdH64RjZjHJp2WFViHkNsxcH5b8IQKx9fct_CyxDp_ZT/exec", API=API_URL.startsWith("http")?API_URL:"";
+const $=s=>document.querySelector(s);
+const esc=t=>String(t==null?"":t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const CUR="$"; // keep the same as CUR in index.html
+const money=n=>CUR+Number(n||0).toFixed(2);
+function today(){const t=new Date(),p=n=>String(n).padStart(2,"0");return t.getFullYear()+"-"+p(t.getMonth()+1)+"-"+p(t.getDate())}
+let sales=null,tick=0;
+let key=ls.get("key",""), printed=new Set(ls.get("printed",[])), busy=false, data={orders:[],reservations:[]}, timer=null;
+
+async function call(params){
+  const r=await fetch(API+"?"+new URLSearchParams(Object.assign({},params,{key})));
+  return r.json();
+}
+async function poll(){
+  if(!API){$("#st").textContent="Backend not connected yet (see SETUP.md)";return}
+  try{
+    const j=await call({action:"list"});
+    if(!j.ok){$("#login").hidden=false;$("#main").hidden=true;$("#lerr").textContent="That staff key was not accepted.";return}
+    data=j;$("#login").hidden=true;$("#main").hidden=false;
+    $("#st").textContent="Live · updated "+new Date().toLocaleTimeString();
+    render();autoPrint();
+    if(tick++%4===0)loadSales();
+  }catch(e){$("#st").textContent="Offline – retrying…"}
+}
+function orderTicket(o){
+  return `<p class="tbl">${o.mode==="Dine-in"?"TABLE "+esc(o.name):"PICKUP: "+esc(o.name)}</p><p class="meta">Order ${esc(o.no)} &middot; ${esc(o.time)}</p><hr>`+
+    String(o.items).split(" | ").map(i=>`<p class="ln">${esc(i)}</p>`).join("")+`<hr><p class="meta">Total ${money(o.total)}</p>`;
+}
+function resTicket(r){
+  return `<p class="tbl">RESERVATION</p><p class="meta">${esc(r.date)} &middot; ${esc(r.slot)} &middot; Ref ${esc(r.ref)}</p><hr>
+   <p class="ln">${esc(r.name)}</p><p class="ln">${esc(r.guests)} guest(s)</p><p class="ln">${esc(r.phone)}</p>`+(r.notes?`<p class="meta">Notes: ${esc(r.notes)}</p>`:"");
+}
+async function printHtml(h){$("#ticket").innerHTML=h;await wait(150);try{window.print()}catch(e){}await wait(600)}
+async function autoPrint(){
+  if(busy||!$("#auto").checked)return;busy=true;
+  try{
+    for(const o of data.orders){
+      const id="O"+o.no+"-"+o.row;if(printed.has(id))continue;
+      printed.add(id);ls.set("printed",[...printed].slice(-300));
+      await printHtml(orderTicket(o));
+    }
+  }finally{busy=false}
+}
+async function loadSales(){
+  if(!API||!key)return;
+  try{const j=await call({action:"sales",date:$("#sdate").value||today()});if(j.ok){sales=j;renderSales()}}catch(e){}
+}
+function renderSales(){
+  const s=sales,items=Object.entries(s.items).sort((a,b)=>b[1]-a[1]);
+  $("#sbody").innerHTML=`<div style="font-size:36px;font-weight:800;margin:8px 0 2px">${money(s.total)}</div>
+   <div class="m">${s.count} order${s.count===1?"":"s"}${s.count?" · average "+money(s.total/s.count):""}${Object.entries(s.by).map(([k,v])=>" · "+esc(k)+" "+money(v)).join("")}</div>`+
+   (items.length?`<ul>${items.map(([n,q])=>`<li>${q} &times; ${esc(n)}</li>`).join("")}</ul>`:"");
+}
+function salesTicket(){
+  const s=sales,items=Object.entries(s.items).sort((a,b)=>b[1]-a[1]);
+  return `<p class="tbl">SALES</p><p class="meta">${esc(s.date)}</p><hr><p class="ln">Total ${money(s.total)}</p><p class="ln">${s.count} order${s.count===1?"":"s"}</p>`+
+   Object.entries(s.by).map(([k,v])=>`<p class="meta">${esc(k)}: ${money(v)}</p>`).join("")+`<hr>`+items.map(([n,q])=>`<p class="meta">${q} x ${esc(n)}</p>`).join("");
+}
+function render(){
+  $("#orders").innerHTML=data.orders.length?data.orders.map(o=>`<div class="card"><h3>${o.mode==="Dine-in"?"Table "+esc(o.name):"Pickup: "+esc(o.name)}</h3>
+    <div class="m">Order ${esc(o.no)} · ${esc(o.time)} · ${money(o.total)}</div>
+    <ul>${String(o.items).split(" | ").map(i=>`<li>${esc(i)}</li>`).join("")}</ul>
+    <button class="ok" data-a="done" data-row="${o.row}" data-id="${esc(o.no)}">Done</button>
+    <button class="alt" data-a="print-o" data-row="${o.row}">Print again</button></div>`).join(""):`<p class="empty">No new orders.</p>`;
+  $("#res").innerHTML=data.reservations.length?data.reservations.map(r=>`<div class="card" style="border-left-color:#C28A00"><h3>${esc(r.name)} · ${esc(r.guests)} guest(s)</h3>
+    <div class="m">${esc(r.date)} at ${esc(r.slot)} · Ref ${esc(r.ref)} · <a href="tel:${esc(r.phone)}">${esc(r.phone)}</a></div>
+    ${r.notes?`<div class="notes">${esc(r.notes)}</div>`:""}
+    <button class="ok" data-a="Confirmed" data-row="${r.row}" data-id="${esc(r.ref)}">Confirm</button>
+    <button class="alt" data-a="Declined" data-row="${r.row}" data-id="${esc(r.ref)}">Decline</button>
+    <button class="alt" data-a="print-r" data-row="${r.row}">Print</button></div>`).join(""):`<p class="empty">No pending reservations.</p>`;
+}
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.id==="go"){key=$("#key").value.trim();ls.set("key",key);$("#lerr").textContent="";start();return}
+  const a=b.dataset.a;if(!a)return;
+  if(a==="refresh-sales"){loadSales();return}
+  if(a==="print-sales"){if(sales)printHtml(salesTicket());return}
+  if(a==="print-o"){printHtml(orderTicket(data.orders.find(o=>o.row==b.dataset.row)));return}
+  if(a==="print-r"){printHtml(resTicket(data.reservations.find(r=>r.row==b.dataset.row)));return}
+  b.disabled=true;
+  const isO=a==="done";
+  try{await call({action:"set",sheet:isO?"Orders":"Reservations",row:b.dataset.row,id:b.dataset.id,status:isO?"Done":a})}catch(x){}
+  poll();loadSales();
+});
+function start(){if(!$("#sdate").value)$("#sdate").value=today();clearInterval(timer);poll();timer=setInterval(poll,8000)}
+if(key)start();
+</script>
+</body>
+</html>

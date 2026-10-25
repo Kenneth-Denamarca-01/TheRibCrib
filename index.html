@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#A31212">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rib Crib">
+<title>The Rib Crib – Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&family=Lobster&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFEEEE;--surface:#FFFFFF;--ink:#241616;--muted:#6B5C5C;--line:#DDD8D8;
+  --accent:#A31212;--accent-ink:#FFFFFF;--sun:#F5B82E;--tile:#E6E2E2;
+  --head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1B1212;--surface:#271A1A;--ink:#F5EDED;--muted:#B8A6A6;--line:#4A3434;--tile:#352525;--accent:#C62222;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1B1212;--surface:#271A1A;--ink:#F5EDED;--muted:#B8A6A6;--line:#4A3434;--tile:#352525;--accent:#C62222;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--body);-webkit-tap-highlight-color:transparent}
+.app{max-width:520px;margin:0 auto;padding:0 16px 120px}
+.hero{display:grid;grid-template-columns:2.1fr 1fr;margin-top:16px;border-radius:16px;overflow:hidden;background:#EDEDED}
+.hero-l{padding:18px 8px 18px 14px;display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0}
+.word{font:400 clamp(30px,10.5vw,52px)/.95 "Lobster","Brush Script MT",cursive;color:#A31212;transform:rotate(-3deg);transform-origin:left center}
+.ribbon{align-self:flex-start;background:#8B0E0E;color:#fff;font:700 clamp(12px,3.6vw,17px)/1 "Oswald","Arial Narrow",Impact,sans-serif;letter-spacing:.06em;padding:8px 18px;clip-path:polygon(0 0,100% 8%,96% 100%,4% 92%,0 100%);transform:rotate(-3deg);transform-origin:left center}
+.hero-r{background:#8B0E0E;display:grid;place-items:center;padding:12px}
+.badge{border:3px solid #fff;border-radius:18px 18px 26px 26px;color:#fff;text-align:center;padding:8px 6px;font:700 clamp(11px,3.4vw,15px)/1.1 "Oswald",Impact,sans-serif;width:100%;max-width:120px}
+.badge i{display:block;font-style:normal;font-size:clamp(22px,7vw,34px);margin:2px 0}
+.badge span{display:block;font-size:.62em;letter-spacing:.04em;border-top:2px solid #fff;border-bottom:2px solid #fff;padding:2px 0;margin:2px 0}
+header{padding:16px 0 8px}
+.acts{display:flex;gap:8px;margin-top:14px}
+.btn{flex:1;text-align:center;text-decoration:none;font:700 15px var(--body);padding:11px;border-radius:10px}
+.btn.call{background:var(--accent);color:#fff}
+.btn.msg{background:var(--tile);color:var(--ink)}
+.resbtn{width:100%;margin-top:8px;border:2px solid var(--accent);background:transparent;color:var(--accent);font:700 15px var(--body);padding:11px;border-radius:10px;cursor:pointer}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two>div{min-width:0}
+.sum{background:var(--surface);border-radius:14px;padding:6px 14px;margin-top:6px}
+.sum .line:last-child{border-bottom:0}
+a.cta{display:block;text-align:center;text-decoration:none}
+h1{font:800 30px/1.05 var(--head);margin:0;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:6px 0 0;font-size:14px}
+.modes{display:flex;gap:6px;background:var(--tile);padding:4px;border-radius:12px;margin:16px 0 4px}
+.modes button{flex:1;border:0;background:transparent;color:var(--muted);font:500 14px var(--body);padding:9px;border-radius:9px;cursor:pointer}
+.modes button[aria-pressed="true"]{background:var(--surface);color:var(--ink);font-weight:700}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:2;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px var(--body);padding:8px 14px;border-radius:99px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.item{display:flex;gap:14px;background:var(--surface);border-radius:16px;padding:12px;margin-bottom:10px;align-items:center}
+.pic{flex:none;width:72px;height:72px;border-radius:14px;background:var(--tile);display:grid;place-items:center;font-size:38px}
+.info{flex:1;min-width:0}
+.info h3{font:700 17px/1.2 var(--head);margin:0}
+.info p{margin:3px 0 6px;color:var(--muted);font-size:13px;line-height:1.35}
+.price{font-weight:700}
+.add{border:0;background:var(--accent);color:var(--accent-ink);font:700 14px var(--body);padding:9px 16px;border-radius:99px;cursor:pointer}
+.step{display:flex;align-items:center;gap:2px;background:var(--tile);border-radius:99px}
+.step button{width:34px;height:34px;border:0;background:transparent;color:var(--ink);font-size:20px;cursor:pointer;border-radius:50%}
+.step span{min-width:22px;text-align:center;font-weight:700}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:5;pointer-events:none}
+.bar button{pointer-events:auto;display:flex;justify-content:space-between;align-items:center;width:100%;max-width:520px;margin:0 auto;border:0;background:var(--ink);color:var(--bg);font:700 16px var(--body);padding:16px 20px;border-radius:16px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.bar[hidden]{display:none}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:10}
+.sheet-bg.open{display:block}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--bg);border-radius:22px 22px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));max-height:88%;overflow:auto;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+.sheet h2{font:800 24px var(--head);margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}
+.x{border:0;background:var(--tile);color:var(--ink);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer}
+.line{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.line .n{flex:1}.line .n small{display:block;color:var(--muted)}
+.row{display:flex;justify-content:space-between;padding:4px 0;color:var(--muted)}
+.row.total{color:var(--ink);font:800 20px var(--head);padding-top:10px}
+label{display:block;font-weight:700;font-size:14px;margin:16px 0 6px}
+input,select{width:100%;font:16px var(--body);padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.cta{width:100%;margin-top:18px;border:0;background:var(--accent);color:var(--accent-ink);font:700 17px var(--body);padding:16px;border-radius:14px;cursor:pointer}
+.err{color:var(--accent);font-size:14px;margin:8px 0 0;min-height:20px}
+.done{text-align:center;padding:24px 0}
+.done .big{font-size:56px}
+.done .no{font:800 40px var(--head);letter-spacing:.02em;margin:6px 0}
+.empty{text-align:center;color:var(--muted);padding:30px 0}
+#ticket{display:none}
+@media print{
+  html,body{background:#fff!important}
+  body>*:not(#ticket){display:none!important}
+  #ticket{display:block;color:#000;font:18px/1.4 "Courier New",monospace;max-width:100mm;padding:6mm}
+  #ticket .tbl{font:800 40px/1.1 Arial,sans-serif;margin:0 0 4px}
+  #ticket .meta{font-size:14px;margin:0 0 8px}
+  #ticket hr{border:0;border-top:2px dashed #000;margin:10px 0}
+  #ticket .ln{font-size:20px;font-weight:700;margin:6px 0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero" role="img" aria-label="The Rib Crib. Eat meat repeat.">
+    <div class="hero-l"><div class="word">The Rib Crib</div><div class="ribbon">EAT MEAT REPEAT</div></div>
+    <div class="hero-r"><div class="badge"><div>THE RIB</div><i aria-hidden="true">🐖</i><span>LETS MEAT HERE</span><div>CRIB</div></div></div>
+  </div>
+  <header>
+    <h1>The Rib Crib</h1>
+    <p class="sub">Gonzales Bldg, Rotary, Tagum City<br>Food delivery service · 0927 087 4592</p>
+    <div class="acts"><a class="btn call" href="tel:+639270874592">Call now</a><a class="btn msg" href="https://m.me/theribcrib.tcph" target="_blank" rel="noopener">Message</a></div>
+    <button class="resbtn" data-reserve>📅 Reserve a table</button>
+    <div class="modes" role="group" aria-label="Order type">
+      <button data-mode="Pickup" aria-pressed="true">Pickup</button>
+      <button data-mode="Dine-in" aria-pressed="false">Dine-in</button>
+    </div>
+  </header>
+  <nav class="chips" id="chips" aria-label="Menu categories"></nav>
+  <main id="list"></main>
+</div>
+
+<div class="bar" id="bar" hidden><button id="viewCart"></button></div>
+<div class="sheet-bg" id="bg"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+
+<div id="ticket" aria-hidden="true"></div>
+
+<script>
+const MENU=[
+ {id:1,cat:"Mains",name:"Chicken Adobo Bowl",desc:"Soy-vinegar braised chicken, garlic rice, egg.",price:8.5,e:"🍛"},
+ {id:2,cat:"Mains",name:"Grilled Pork Belly",desc:"Charred, sliced thin, with atchara and rice.",price:9.75,e:"🥩"},
+ {id:3,cat:"Mains",name:"Garlic Shrimp",desc:"Butter garlic shrimp with steamed rice.",price:11,e:"🍤"},
+ {id:4,cat:"Mains",name:"Veggie Pancit",desc:"Stir-fried noodles, cabbage, carrot, calamansi.",price:7.25,e:"🍜"},
+ {id:5,cat:"Burgers",name:"Classic Burger",desc:"Beef patty, cheddar, pickles, house sauce.",price:7.5,e:"🍔"},
+ {id:6,cat:"Burgers",name:"Crispy Chicken Sandwich",desc:"Buttermilk fried chicken, slaw, mayo.",price:7.95,e:"🥪"},
+ {id:7,cat:"Sides",name:"Garlic Fries",desc:"Skin-on fries tossed in roasted garlic.",price:3.5,e:"🍟"},
+ {id:8,cat:"Sides",name:"Fresh Spring Rolls",desc:"Rice paper, herbs, peanut dip.",price:4.25,e:"🥗"},
+ {id:9,cat:"Drinks",name:"Iced Calamansi",desc:"Tart citrus over ice, lightly sweet.",price:2.75,e:"🍋"},
+ {id:10,cat:"Drinks",name:"Mango Shake",desc:"Ripe mango blended thick and cold.",price:3.95,e:"🥭"},
+ {id:11,cat:"Desserts",name:"Leche Flan",desc:"Silky caramel custard.",price:3.75,e:"🍮"},
+ {id:12,cat:"Desserts",name:"Halo-Halo",desc:"Shaved ice, sweet beans, fruit, ube ice cream.",price:5.5,e:"🍧"}
+];
+const CATS=["All",...new Set(MENU.map(m=>m.cat))];
+const API_URL="https://script.google.com/macros/s/AKfycbzu7KGDR2Rfw-1ptBLC-41ihdH64RjZjHJp2WFViHkNsxcH5b8IQKx9fct_CyxDp_ZT/exec";
+const API=API_URL.startsWith("http")?API_URL:"";
+const CUR="$", TAX=0.08;
+function send(payload){
+  return fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)})
+    .then(r=>r.json()).then(j=>!!j.ok).catch(()=>false);
+}
+let cat="All", mode="Pickup", cart={}, last=null;
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function fillTicket(o){
+  $("#ticket").innerHTML=`<p class="tbl">${o.mode==="Dine-in"?"TABLE "+esc(o.v):"PICKUP: "+esc(o.v)}</p>
+   <p class="meta">Order ${o.no} &middot; ${esc(o.time)}</p><hr>`+
+   o.lines.map(l=>`<p class="ln">${l.q} x ${esc(l.n)}</p>`).join("")+
+   `<hr><p class="meta">${o.count} item${o.count>1?"s":""} &middot; Total ${o.total}</p>`;
+}
+const $=s=>document.querySelector(s);
+const money=n=>CUR+n.toFixed(2);
+const qty=()=>Object.values(cart).reduce((a,b)=>a+b,0);
+const sub=()=>Object.entries(cart).reduce((t,[id,q])=>t+MENU.find(m=>m.id==id).price*q,0);
+
+function chips(){
+  $("#chips").innerHTML=CATS.map(c=>`<button class="chip" data-cat="${c}" aria-pressed="${c===cat}">${c}</button>`).join("");
+}
+function ctrl(m){
+  const q=cart[m.id]||0;
+  return q?`<div class="step"><button data-dec="${m.id}" aria-label="Remove one ${m.name}">−</button><span>${q}</span><button data-inc="${m.id}" aria-label="Add one ${m.name}">+</button></div>`
+          :`<button class="add" data-inc="${m.id}">Add</button>`;
+}
+function list(){
+  const items=MENU.filter(m=>cat==="All"||m.cat===cat);
+  $("#list").innerHTML=items.map(m=>`<article class="item"><div class="pic" aria-hidden="true">${m.e}</div>
+    <div class="info"><h3>${m.name}</h3><p>${m.desc}</p><span class="price">${money(m.price)}</span></div>${ctrl(m)}</article>`).join("");
+}
+function bar(){
+  const q=qty();
+  $("#bar").hidden=!q;
+  $("#viewCart").innerHTML=`<span>View order (${q})</span><span>${money(sub())}</span>`;
+}
+function refresh(){list();bar();if($("#bg").classList.contains("open")&&$("#sheet").dataset.view==="cart")cartView()}
+
+function cartView(keep){
+  const sh=$("#sheet"); sh.dataset.view="cart";
+  const name=keep?$("#cname").value:"";
+  const ids=Object.keys(cart);
+  if(!ids.length){sh.innerHTML=`<h2>Your order <button class="x" data-close aria-label="Close">✕</button></h2><p class="empty">Your order is empty. Add something from the menu.</p>`;return}
+  const s=sub(),t=s*TAX;
+  sh.innerHTML=`<h2>Your order <button class="x" data-close aria-label="Close">✕</button></h2>`+
+   ids.map(id=>{const m=MENU.find(x=>x.id==id);return `<div class="line"><div class="n">${m.name}<small>${money(m.price)} each</small></div>
+     <div class="step"><button data-dec="${id}" aria-label="Remove one ${m.name}">−</button><span>${cart[id]}</span><button data-inc="${id}" aria-label="Add one ${m.name}">+</button></div>
+     <strong style="min-width:58px;text-align:right">${money(m.price*cart[id])}</strong></div>`}).join("")+
+   `<div style="padding-top:10px"><div class="row"><span>Subtotal</span><span>${money(s)}</span></div>
+    <div class="row"><span>Tax (8%)</span><span>${money(t)}</span></div>
+    <div class="row total"><span>Total</span><span>${money(s+t)}</span></div></div>
+    <label for="cname">${mode==="Dine-in"?"Table number":"Name for pickup"}</label>
+    <input id="cname" autocomplete="off" placeholder="${mode==="Dine-in"?"e.g. 12":"e.g. Maria"}">
+    <p class="err" id="err" role="alert"></p>
+    <button class="cta" id="place">Place ${mode} order</button>`;
+  if(keep)$("#cname").value=name;
+}
+const PHONE="+639270874592";
+function resView(){
+  const sh=$("#sheet");sh.dataset.view="reserve";
+  const t=new Date(),pad=n=>String(n).padStart(2,"0");
+  const today=`${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())}`;
+  sh.innerHTML=`<h2>Reserve a table <button class="x" data-close aria-label="Close">✕</button></h2>
+   <label for="rn">Your name</label><input id="rn" autocomplete="name">
+   <label for="rp">Mobile number</label><input id="rp" type="tel" inputmode="tel" autocomplete="tel" placeholder="09XX XXX XXXX">
+   <div class="two"><div><label for="rd">Date</label><input id="rd" type="date" min="${today}" value="${today}"></div>
+   <div><label for="rt">Time</label><input id="rt" type="time" value="18:00"></div></div>
+   <label for="rg">Guests</label><select id="rg">${[...Array(12)].map((_,i)=>`<option>${i+1}</option>`).join("")}<option>13 or more</option></select>
+   <label for="rx">Notes (optional)</label><input id="rx" placeholder="Birthday, high chair, etc.">
+   <p class="err" id="rerr" role="alert"></p>
+   <button class="cta" data-rsubmit>Continue</button>`;
+  $("#rg").value="2";
+  $("#bg").classList.add("open");
+}
+async function resSubmit(){
+  const name=$("#rn").value.trim(),phone=$("#rp").value.trim(),d=$("#rd").value,tm=$("#rt").value,
+        guests=$("#rg").value,notes=$("#rx").value.trim(),err=m=>{$("#rerr").textContent=m};
+  if(!name)return err("Please enter your name.");
+  if(phone.replace(/\D/g,"").length<7)return err("Please enter a mobile number we can reach.");
+  if(!d||!tm)return err("Please choose a date and time.");
+  const [y,mo,da]=d.split("-").map(Number),[h,mi]=tm.split(":").map(Number),when=new Date(y,mo-1,da,h,mi);
+  if(when<new Date())return err("That time has already passed. Pick a later time.");
+  const dateText=when.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric",year:"numeric"}),
+        timeText=when.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"});
+  const ref="R"+String(Math.floor(100+Math.random()*900));
+  let sent=false;
+  if(API){
+    const b=$("[data-rsubmit]");b.disabled=true;b.textContent="Sending…";
+    sent=await send({type:"reservation",ref,name,phone,dateText,timeText,guests,notes});
+    if(!sent){b.disabled=false;b.textContent="Continue";return err("Couldn't send your request. Check your connection and try again.")}
+  }
+  resDone({name,phone,dateText,timeText,guests,notes,ref,sent});
+}
+function resDone(r){
+  const sh=$("#sheet");sh.dataset.view="resdone";
+  $("#ticket").innerHTML=`<p class="tbl">RESERVATION</p><p class="meta">${esc(r.dateText)} &middot; ${esc(r.timeText)}</p><hr>
+   <p class="ln">${esc(r.name)}</p><p class="ln">${esc(r.guests)} guest${r.guests==="1"?"":"s"}</p><p class="ln">${esc(r.phone)}</p>`+(r.notes?`<p class="meta">Notes: ${esc(r.notes)}</p>`:"");
+  const msg=`Table reservation request - The Rib Crib\nName: ${r.name}\nPhone: ${r.phone}\nDate: ${r.dateText}\nTime: ${r.timeText}\nGuests: ${r.guests}`+(r.notes?`\nNotes: ${r.notes}`:"");
+  const row=(a,b)=>`<div class="line" style="justify-content:space-between"><span>${a}</span><strong>${esc(b)}</strong></div>`;
+  sh.innerHTML=`<h2>${r.sent?"Request sent":"Almost done"} <button class="x" data-close aria-label="Close">✕</button></h2>
+   <p class="sub">${r.sent?"The Rib Crib will confirm your table by call or text. It is not booked until you hear from us.":"Your table is not booked yet. Send this request to The Rib Crib and wait for their reply to confirm."}</p>
+   <div class="sum">${r.ref?row("Reference",r.ref):""}${row("Name",r.name)}${row("Phone",r.phone)}${row("Date",r.dateText)}${row("Time",r.timeText)}${row("Guests",r.guests)}${r.notes?row("Notes",r.notes):""}</div>
+   ${r.sent?"":`<a class="cta" href="sms:${PHONE}?&body=${encodeURIComponent(msg)}">Send request by text message</a>
+   <button class="cta" data-print style="background:var(--tile);color:var(--ink);margin-top:10px">Print reservation slip</button>`}
+   <button class="cta" data-close style="background:transparent;color:var(--muted);margin-top:4px">Close</button>`;
+}
+function open(){$("#bg").classList.add("open");cartView()}
+function close(){$("#bg").classList.remove("open")}
+async function place(){
+  const v=$("#cname").value.trim();
+  if(!v){$("#err").textContent=mode==="Dine-in"?"Enter your table number so we can find you.":"Enter a name so we can call your order.";$("#cname").focus();return}
+  const no="A"+String(Math.floor(100+Math.random()*900));
+  const total=money(sub()*(1+TAX)),amt=+(sub()*(1+TAX)).toFixed(2),n=qty();
+  last={no,mode,v,total,count:n,time:new Date().toLocaleString(),
+        lines:Object.entries(cart).map(([id,q])=>({n:MENU.find(m=>m.id==id).name,q}))};
+  fillTicket(last);
+  if(API){
+    const btn=$("#place");btn.disabled=true;btn.textContent="Sending…";
+    const ok=await send({type:"order",no,mode,name:v,items:last.lines.map(l=>l.q+" x "+l.n).join(" | "),total:amt});
+    if(!ok){btn.disabled=false;btn.textContent="Place "+mode+" order";$("#err").textContent="Couldn't send your order. Check your connection and try again.";return}
+  }
+  cart={};list();bar();
+  const sh=$("#sheet");sh.dataset.view="done";
+  sh.innerHTML=`<div class="done"><div class="big">✅</div><h2 style="justify-content:center">Order placed</h2>
+   <div class="no">${no}</div>
+   <p class="sub"></p>
+   <div class="ordered" style="text-align:left;background:var(--surface);border-radius:14px;padding:6px 14px;margin-top:14px">${last.lines.map(l=>`<div class="line" style="justify-content:space-between"><span>${esc(l.n)}</span><strong>×${l.q}</strong></div>`).join("")}</div>
+   ${API?"":`<button class="cta" data-print style="background:var(--tile);color:var(--ink)">Print ticket again</button>`}
+   <button class="cta" data-close style="margin-top:10px">Back to menu</button></div>`;
+  sh.querySelector(".sub").textContent=`${n} item${n>1?"s":""} · ${total} · ${mode} for ${v}. We'll have it ready in about 15 minutes.`;
+  if(!API)setTimeout(()=>{try{window.print()}catch(e){}},300);
+}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button,.sheet-bg");if(!b)return;
+  if(b.dataset.cat){cat=b.dataset.cat;chips();list();return}
+  if(b.dataset.mode){mode=b.dataset.mode;document.querySelectorAll(".modes button").forEach(x=>x.setAttribute("aria-pressed",x===b));return}
+  if(b.dataset.inc){cart[b.dataset.inc]=(cart[b.dataset.inc]||0)+1;list();bar();if($("#sheet").dataset.view==="cart"&&$("#bg").classList.contains("open"))cartView(true);return}
+  if(b.dataset.dec){const id=b.dataset.dec;cart[id]--;if(cart[id]<=0)delete cart[id];list();bar();if($("#sheet").dataset.view==="cart"&&$("#bg").classList.contains("open"))cartView(true);return}
+  if(b.id==="viewCart"){open();return}
+  if(b.id==="place"){place();return}
+  if(b.hasAttribute("data-reserve")){resView();return}
+  if(b.hasAttribute("data-rsubmit")){resSubmit();return}
+  if(b.hasAttribute("data-print")){try{window.print()}catch(e){}return}
+  if(b.hasAttribute("data-close")||(b.id==="bg"&&e.target===b)){close()}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+chips();list();bar();
+</script>
+</body>
+</html>
