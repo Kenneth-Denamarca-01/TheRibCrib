@@ -29,6 +29,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:inherit}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--body);-webkit-tap-highlight-color:transparent}
 .app{max-width:520px;margin:0 auto;padding:0 16px 120px}
+.hero-img{display:block;width:100%;height:auto;border-radius:16px;margin-top:16px}
 .hero{display:grid;grid-template-columns:2.1fr 1fr;margin-top:16px;border-radius:16px;overflow:hidden;background:#EDEDED}
 .hero-l{padding:18px 8px 18px 14px;display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0}
 .word{font:400 clamp(30px,10.5vw,52px)/.95 "Lobster","Brush Script MT",cursive;color:#A31212;transform:rotate(-3deg);transform-origin:left center}
@@ -103,10 +104,7 @@ input,select{width:100%;font:16px var(--body);padding:12px;border-radius:12px;bo
 </head>
 <body>
 <div class="app">
-  <div class="hero" role="img" aria-label="The Rib Crib. Eat meat repeat.">
-    <div class="hero-l"><div class="word">The Rib Crib</div><div class="ribbon">EAT MEAT REPEAT</div></div>
-    <div class="hero-r"><div class="badge"><div>THE RIB</div><i aria-hidden="true">🐖</i><span>LETS MEAT HERE</span><div>CRIB</div></div></div>
-  </div>
+  <img class="hero-img" src="banner.jpg" alt="The Rib Crib. Eat meat repeat." width="1200">
   <header>
     <h1>The Rib Crib</h1>
     <p class="sub">Gonzales Bldg, Rotary, Tagum City<br>Food delivery service · 0927 087 4592</p>
@@ -142,7 +140,7 @@ const MENU=[
  {id:12,cat:"Desserts",name:"Halo-Halo",desc:"Shaved ice, sweet beans, fruit, ube ice cream.",price:5.5,e:"🍧"}
 ];
 const CATS=["All",...new Set(MENU.map(m=>m.cat))];
-const API_URL="https://script.google.com/macros/s/AKfycbzu7KGDR2Rfw-1ptBLC-41ihdH64RjZjHJp2WFViHkNsxcH5b8IQKx9fct_CyxDp_ZT/exec";
+const API_URL="PASTE_URL_HERE";
 const API=API_URL.startsWith("http")?API_URL:"";
 const CUR="$", TAX=0.08;
 function send(payload){
