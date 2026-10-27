@@ -1,5 +1,5 @@
 // The Rib Crib backend (Google Apps Script). Paste into a Google Sheet's Apps Script editor.
-const STAFF_KEY = '12345';   // staff password for the Kitchen page
+const STAFF_KEY = 'THE-RIBCRIB-PW';   // staff password for the Kitchen page
 const OH = ['Time','Order No','Type','Name / Table','Items','Total','Status'];
 const RH = ['Time','Ref','Name','Phone','Date','Time slot','Guests','Notes','Status'];
 
